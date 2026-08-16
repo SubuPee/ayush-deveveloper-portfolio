@@ -148,12 +148,18 @@ export function BrandIcon({ id, className }: { id: BrandId; className?: string }
     case "pdf":
       return wrap(
         "linear-gradient(135deg,#f8fafc,#e2e8f0)",
-        <svg viewBox="0 0 24 24" width="60%" height="60%" aria-hidden>
-          <path fill="#DC2626" d="M5 3h9l5 5v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
-          <path fill="#fff" d="M6.6 12.5h10.8v5.2H6.6z" />
-          <text x="12" y="16.6" textAnchor="middle" fontSize="4.4" fontWeight="700" fill="#DC2626">
-            PDF
-          </text>
+        <svg viewBox="0 0 96 96" width="72%" height="72%" aria-hidden>
+          <defs>
+            <linearGradient id="pdfDocGradient" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#e2e8f0" />
+            </linearGradient>
+          </defs>
+          <path d="M30 18h22l18 18v42a8 8 0 0 1-8 8H30a8 8 0 0 1-8-8V26a8 8 0 0 1 8-8Z" fill="url(#pdfDocGradient)" />
+          <path d="M52 18v16h18" fill="#dbe3ef" />
+          <path d="M24 44h48v6H24zm0 12h48v6H24zm0 12h36v6H24z" fill="#ef4444" opacity="0.9" />
+          <path d="M42 22h-4v12h-6l8 8 8-8h-6z" fill="#ef4444" opacity="0.72" />
+          <text x="48" y="66" textAnchor="middle" fontSize="12" fontWeight="700" fill="#dc2626">PDF</text>
         </svg>,
       );
     case "journal":
@@ -167,7 +173,19 @@ export function BrandIcon({ id, className }: { id: BrandId; className?: string }
     case "folder":
       return wrap(
         "linear-gradient(135deg,#FDBA3B,#F59E0B)",
-        <svg viewBox="0 0 24 24" width="0" height="0" aria-hidden />,
+        <svg viewBox="0 0 96 96" width="72%" height="72%" aria-hidden>
+          <defs>
+            <linearGradient id="folderGradient" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stopColor="#fef3c7" />
+              <stop offset="100%" stopColor="#f9d26d" />
+            </linearGradient>
+          </defs>
+          <path d="M14 30c0-7.7 6.3-14 14-14h20l8 10h26c7.7 0 14 6.3 14 14v30c0 7.7-6.3 14-14 14H28c-7.7 0-14-6.3-14-14V30Z" fill="url(#folderGradient)" opacity="0.96" />
+          <path d="M14 34h68c6.5 0 12 5.5 12 12v2H14v-2c0-6.5 5.5-12 12-12Z" fill="#f5c65d" opacity="0.9" />
+          <path d="M24 48h48v24c0 5.5-4.5 10-10 10H34c-5.5 0-10-4.5-10-10V48Z" fill="#f8d782" opacity="0.85" />
+          <path d="M32 58h32v6H32zm0 12h24v6H32z" fill="#a16207" opacity="0.9" />
+          <circle cx="70" cy="52" r="6" fill="#fff7d8" opacity="0.7" />
+        </svg>,
       );
     case "codex":
       return wrap(

@@ -34,7 +34,7 @@ export default function SafariApp({ params }: AppProps) {
         </button>
         <div className="flex flex-1 items-center gap-2 rounded-md bg-background/80 px-3 py-1 text-xs text-muted-foreground">
           <Lock className="h-3 w-3" />
-          <span className="truncate">{current ? current.url : "https://ayush.dev/projects"}</span>
+          <span className="truncate">{current ? current.url : "Portfolio Projects"}</span>
         </div>
         <button
           className="rounded p-1 text-muted-foreground hover:bg-muted"
@@ -97,6 +97,9 @@ function List({ title, items }: { title: string; items: string[] }) {
 }
 
 function ProjectPage({ project }: { project: Project }) {
+  const hasGitHub = !!project.github && !project.github.toLowerCase().includes("source not publicly available");
+  const hasLive = !!project.live && !project.live.toLowerCase().includes("source not publicly available");
+
   return (
     <article className="pb-8">
       <div className="h-40 w-full" style={{ background: project.accent }} />
@@ -105,22 +108,35 @@ function ProjectPage({ project }: { project: Project }) {
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{project.description}</p>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
-          >
-            <Github className="h-3.5 w-3.5" /> GitHub
-          </a>
-          <a
-            href={project.live}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground hover:opacity-90"
-          >
-            <ExternalLink className="h-3.5 w-3.5" /> Live project
-          </a>
+          {hasGitHub ? (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+            >
+              <Github className="h-3.5 w-3.5" /> GitHub
+            </a>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground">
+              <Github className="h-3.5 w-3.5" /> Source not publicly available
+            </span>
+          )}
+
+          {hasLive ? (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground hover:opacity-90"
+            >
+              <ExternalLink className="h-3.5 w-3.5" /> Live project
+            </a>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground">
+              <ExternalLink className="h-3.5 w-3.5" /> Source not publicly available
+            </span>
+          )}
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">

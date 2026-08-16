@@ -16,7 +16,9 @@ export type AppId =
   | "sysinfo"
   | "music"
   | "camera"
-  | "contacts";
+  | "contacts"
+  | "recruiter"
+  | "askayush";
 
 export type AppProps = { windowId: string; params?: Record<string, string> | undefined };
 
@@ -210,6 +212,30 @@ export const applications: Record<AppId, AppDefinition> = {
     minimumSize: { width: 420, height: 340 },
     menus: ["File", "Edit", "View", "Window", "Help"],
     component: lazy(() => import("./apps/ContactsApp")),
+    inDock: true,
+  },
+  recruiter: {
+    id: "recruiter",
+    name: "Hire Me — Recruiter Dashboard",
+    icon: "Target",
+    color: "linear-gradient(135deg,#0f172a,#334155)",
+    category: "Portfolio",
+    defaultSize: { width: 1220, height: 760 },
+    minimumSize: { width: 600, height: 420 },
+    menus: ["File", "Edit", "View", "Window", "Help"],
+    component: lazy(() => import("./apps/RecruiterDashboardApp")),
+    inDock: true,
+  },
+  askayush: {
+    id: "askayush",
+    name: "Ask Ayush AI",
+    icon: "Sparkles",
+    color: "linear-gradient(135deg,#1e293b,#475569)",
+    category: "Portfolio",
+    defaultSize: { width: 900, height: 630 },
+    minimumSize: { width: 420, height: 360 },
+    menus: ["File", "Edit", "View", "Window", "Help"],
+    component: lazy(() => import("./apps/AskAyushAIApp")),
     inDock: true,
   },
   sysinfo: {
