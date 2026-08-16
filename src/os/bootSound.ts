@@ -1,12 +1,30 @@
+let bootAudioContext: AudioContext | null = null;
+
+function getBootAudioContext() {
+  if (typeof window === "undefined") return null;
+
+  const Ctx =
+    window.AudioContext ??
+    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+
+  if (!Ctx) return null;
+
+  if (!bootAudioContext || bootAudioContext.state === "closed") {
+    bootAudioContext = new Ctx();
+  }
+
+  if (bootAudioContext.state === "suspended") {
+    void bootAudioContext.resume();
+  }
+
+  return bootAudioContext;
+}
+
 /** Synthesised startup chime (no audio file needed). Safe to call anywhere. */
 export function playBootChime(volume = 0.22) {
   try {
-    const Ctx =
-      window.AudioContext ??
-      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Ctx) return () => undefined;
-    const ctx = new Ctx();
-    void ctx.resume?.();
+    const ctx = getBootAudioContext();
+    if (!ctx) return () => undefined;
 
     const master = ctx.createGain();
     master.gain.value = 0;
@@ -18,7 +36,6 @@ export function playBootChime(volume = 0.22) {
     master.gain.linearRampToValueAtTime(volume, t0 + 0.18);
     master.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
 
-    // Warm F#-major-ish chord, the classic Mac startup colour.
     const partials = [92.5, 185, 277.2, 369.9, 554.4, 739.9];
     partials.forEach((freq, i) => {
       const osc = ctx.createOscillator();
@@ -32,7 +49,6 @@ export function playBootChime(volume = 0.22) {
       osc.stop(t0 + dur);
     });
 
-    // Soft shimmer tail.
     const noise = ctx.createBufferSource();
     const buf = ctx.createBuffer(1, ctx.sampleRate * 1.2, ctx.sampleRate);
     const data = buf.getChannelData(0);
@@ -45,10 +61,12 @@ export function playBootChime(volume = 0.22) {
     ng.gain.value = 0.12;
     noise.connect(nf).connect(ng).connect(master);
     noise.start(t0);
+    noise.stop(t0 + dur + 0.2);
 
     return () => {
       try {
-        void ctx.close();
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setTargetAtTime(0, ctx.currentTime, 0.04);
       } catch {
         /* ignore */
       }
@@ -61,26 +79,20 @@ export function playBootChime(volume = 0.22) {
 /** Boot loading sound — continuous soft tone during boot */
 export function playBootLoadingSound(duration: number, volume = 0.3) {
   try {
-    const Ctx =
-      window.AudioContext ??
-      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Ctx) return () => undefined;
-    const ctx = new Ctx();
-    void ctx.resume?.();
+    const ctx = getBootAudioContext();
+    if (!ctx) return () => undefined;
 
     const master = ctx.createGain();
     master.connect(ctx.destination);
 
     const t0 = ctx.currentTime;
     const dur = Math.max(duration / 1000, 0.5);
-    
-    // Fade in, hold, fade out
+
     master.gain.setValueAtTime(0, t0);
     master.gain.linearRampToValueAtTime(volume, t0 + 0.2);
-    master.gain.setValueAtTime(volume, t0 + Math.max(dur - 0.3, t0 + 0.2));
+    master.gain.setValueAtTime(volume, t0 + Math.max(dur - 0.3, 0.2));
     master.gain.linearRampToValueAtTime(0, t0 + dur);
 
-    // Main oscillator — soft low tone
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.setValueAtTime(80, t0);
@@ -89,7 +101,6 @@ export function playBootLoadingSound(duration: number, volume = 0.3) {
     osc.start(t0);
     osc.stop(t0 + dur);
 
-    // Add subtle harmonics for richness
     const osc2 = ctx.createOscillator();
     osc2.type = "sine";
     osc2.frequency.setValueAtTime(160, t0);
@@ -102,7 +113,8 @@ export function playBootLoadingSound(duration: number, volume = 0.3) {
 
     return () => {
       try {
-        void ctx.close();
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setTargetAtTime(0, ctx.currentTime, 0.04);
       } catch {
         /* ignore */
       }

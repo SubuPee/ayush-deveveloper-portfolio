@@ -99,7 +99,7 @@ export function MenuBar() {
           { label: "Undo", shortcut: "⌘Z", disabled: true },
           { label: "Redo", shortcut: "⇧⌘Z", disabled: true },
           { separator: true, label: "-" },
-          { label: "Copy Email", action: () => navigator.clipboard?.writeText("ayush@example.com") },
+          { label: "Copy Email", action: () => navigator.clipboard?.writeText("ayushkrsrivastava12@gmail.com") },
           { label: "Copy Page Link", action: () => navigator.clipboard?.writeText(window.location.href) },
         ];
       case "View":

@@ -13,8 +13,8 @@ export const profile = {
   role: "Software Developer",
   tagline: "An interactive developer portfolio experience",
   location: "Bengaluru, India",
-  email: "ayush@example.com",
-  github: "https://github.com/ayush",
+  email: "ayushkrsrivastava12@gmail.com",
+  github: "https://github.com/AyushDEvElopEr-200119?tab=repositories",
   linkedin: "https://www.linkedin.com/in/ayush-srivastava-6995a9301/",
   summary:
     "Software developer focused on building fast, accessible and delightful web products. I work across React, TypeScript and Node.js, and I care deeply about interaction design, performance and engineering rigour.",
@@ -40,24 +40,27 @@ export const skills = [
 
 export const experience = [
   {
-    company: "Nimbus Labs",
+    company: "BlackBuck",
     role: "Software Developer",
-    period: "2023 — Present",
+    period: "May 2023 — May 2025",
     location: "Bengaluru",
     points: [
-      "Lead frontend for an analytics platform used by 40k+ monthly users",
-      "Cut first-contentful-paint by 46% via route-level code splitting",
-      "Built the internal design system adopted by 5 product teams",
+      "Developed and maintained responsive web applications for a logistics and transportation technology platform.",
+      "Built reusable frontend components and user interfaces using React.js, JavaScript, HTML5, CSS3, and Bootstrap.",
+      "Integrated REST APIs and implemented dynamic, data-driven features for internal and customer-facing applications.",
+      "Collaborated with cross-functional teams to improve application performance, usability, and responsive design.",
     ],
   },
   {
-    company: "Vertexa",
-    role: "Frontend Engineer",
-    period: "2021 — 2023",
-    location: "Remote",
+    company: "Provab Technosoft",
+    role: "Software Developer",
+    period: "May 2025 — Present",
+    location: "Bengaluru",
     points: [
-      "Shipped a multi-tenant admin dashboard with role-based access",
-      "Introduced typed API clients, removing an entire class of runtime bugs",
+      "Develop and maintain responsive web applications using HTML5, CSS3, JavaScript, Bootstrap, and React.js.",
+      "Convert Figma/UI designs into pixel-accurate, responsive web interfaces across desktop, tablet, and mobile devices.",
+      "Integrate REST APIs and develop dynamic frontend features based on business requirements.",
+      "Collaborate with designers, developers, and stakeholders to deliver scalable and user-friendly web solutions.",
     ],
   },
 ];
