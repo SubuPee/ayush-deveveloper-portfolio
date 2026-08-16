@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { AppProps } from "../registry";
 import { useBattery, useClock, useNetwork } from "../hooks";
 import { BluetoothService, DeviceService, formatDate } from "../services";
-import { certifications, experience, profile, projects, skills } from "../data";
+import { experience, profile, projects, skills } from "../data";
 
 type Line = { id: number; text: string; kind: "in" | "out" };
 
@@ -150,7 +150,7 @@ export default function TerminalApp(_props: AppProps) {
             "  █    █    Browser  " + (d.browser?.name ?? "—"),
             `             Screen   ${d.screen ? `${d.screen.width}x${d.screen.height}` : "—"}`,
             `             Uptime   ${clock.now.toLocaleTimeString(clock.locale)}`,
-            `             Certs    ${certifications.length}`,
+            `             Skills   ${skills.length}`,
           ].join("\n"),
         );
         break;

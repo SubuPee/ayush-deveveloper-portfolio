@@ -1,17 +1,8 @@
 import { useState } from "react";
-import {
-  Briefcase,
-  Award,
-  FileText,
-  FolderOpen,
-  Image as ImageIcon,
-  Mail,
-  Sparkles,
-  User,
-} from "lucide-react";
+import { Briefcase, FileText, FolderOpen, Image as ImageIcon, Mail, Sparkles, User } from "lucide-react";
 import { useOS } from "../store";
 import type { AppProps } from "../registry";
-import { certifications, experience, profile, projects, skills } from "../data";
+import { experience, profile, projects, skills } from "../data";
 import { Section } from "./ui";
 
 type Item = { id: string; label: string; icon: typeof User; open: () => void };
@@ -26,7 +17,6 @@ export default function FinderApp(_props: AppProps) {
     { id: "skills", label: "Skills", icon: Sparkles, open: () => setSelected("skills") },
     { id: "projects", label: "Projects", icon: FolderOpen, open: () => openApp("safari") },
     { id: "resume", label: "Resume.pdf", icon: FileText, open: () => openApp("preview") },
-    { id: "certifications", label: "Certifications", icon: Award, open: () => setSelected("certifications") },
     { id: "photos", label: "Photos", icon: ImageIcon, open: () => openApp("photos") },
     { id: "contact", label: "Contact", icon: Mail, open: () => openApp("mail") },
   ];
@@ -104,32 +94,28 @@ function FinderDetail({ id }: { id: string }) {
     return (
       <Section title="Skills">
         <div className="grid gap-3 sm:grid-cols-2">
-          {skills.map((s) => (
-            <div key={s.name}>
-              <div className="flex justify-between text-xs">
-                <span>{s.name}</span>
-                <span className="text-muted-foreground">{s.group}</span>
-              </div>
-              <div className="mt-1 h-1.5 rounded-full bg-muted">
-                <div className="h-full rounded-full bg-primary" style={{ width: `${s.level}%` }} />
+          {Object.entries(
+            skills.reduce<Record<string, typeof skills>>((acc, skill) => {
+              (acc[skill.group] ??= []).push(skill);
+              return acc;
+            }, {}),
+          ).map(([group, groupSkills]) => (
+            <div key={group} className="rounded-lg border border-border/60 p-3">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{group}</p>
+              <div className="flex flex-wrap gap-2">
+                {groupSkills.map((s) => (
+                  <span
+                    key={s.name}
+                    className="rounded-full border border-border bg-muted/40 px-2.5 py-1 text-xs text-foreground"
+                    title={s.proficiency}
+                  >
+                    {s.name}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
         </div>
-      </Section>
-    );
-
-  if (id === "certifications")
-    return (
-      <Section title="Certifications">
-        {certifications.map((c) => (
-          <div key={c.name} className="flex justify-between border-b border-border/60 py-2">
-            <span>{c.name}</span>
-            <span className="text-muted-foreground">
-              {c.issuer} · {c.year}
-            </span>
-          </div>
-        ))}
       </Section>
     );
 

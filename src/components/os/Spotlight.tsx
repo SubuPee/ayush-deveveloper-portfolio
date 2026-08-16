@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { appList, type AppId } from "@/os/registry";
 import { useOS } from "@/os/store";
-import { certifications, experience, profile, projects, skills } from "@/os/data";
+import { experience, profile, projects, skills } from "@/os/data";
 
 type Result = {
   id: string;
@@ -19,7 +19,7 @@ export function Spotlight() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.code === "Space") {
+      if ((e.metaKey || e.ctrlKey) && (e.code === "Space" || e.key.toLowerCase() === "k")) {
         e.preventDefault();
         setSpotlightOpen(true);
       }
@@ -42,6 +42,8 @@ export function Spotlight() {
         detail: a.category,
         run: open(a.id),
       })),
+      { id: "recruiter-dashboard", group: "Recruiter", label: "Hire Me — Recruiter Dashboard", detail: "Open hiring overview", run: open("recruiter") },
+      { id: "ask-ayush", group: "AI Assistant", label: "Ask Ayush AI", detail: "Interview the portfolio", run: open("askayush") },
       { id: "me", group: "Profile", label: profile.name, detail: profile.role, run: open("finder") },
       { id: "about", group: "Profile", label: "About Me", detail: profile.tagline, run: open("finder") },
       { id: "resume", group: "Profile", label: "Resume.pdf", detail: "Open in Preview", run: open("preview") },
@@ -67,13 +69,6 @@ export function Spotlight() {
         group: "Experience",
         label: `${e.role} · ${e.company}`,
         detail: e.period,
-        run: open("finder"),
-      })),
-      ...certifications.map((c) => ({
-        id: `cert-${c.name}`,
-        group: "Certifications",
-        label: c.name,
-        detail: `${c.issuer} ${c.year}`,
         run: open("finder"),
       })),
       { id: "sys-battery", group: "System", label: "Battery", detail: "Live status", run: open("sysinfo") },

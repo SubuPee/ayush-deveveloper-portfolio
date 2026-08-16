@@ -21,21 +21,71 @@ function icon(name: string) {
 }
 
 export function Desktop() {
-  const { windows, settings, openApp, closeWindow, activeWindowId, focusWindow, minimizeWindow, updateSettings } =
-    useOS();
+  const {
+    windows,
+    settings,
+    openApp,
+    closeWindow,
+    activeWindowId,
+    focusWindow,
+    minimizeWindow,
+    updateSettings,
+    setSpotlightOpen,
+  } = useOS();
   const mobile = useIsMobile();
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      const isTypingTarget =
+        e.target instanceof HTMLElement &&
+        (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT" || e.target.isContentEditable);
+
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSpotlightOpen(true);
+        return;
+      }
+
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "w" && activeWindowId) {
         e.preventDefault();
         closeWindow(activeWindowId);
+        return;
+      }
+
+      if (isTypingTarget) return;
+
+      if (e.key.toLowerCase() === "r" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+        e.preventDefault();
+        openApp("recruiter");
+      }
+      if (e.key.toLowerCase() === "p" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+        e.preventDefault();
+        openApp("safari");
+      }
+      if (e.key.toLowerCase() === "e" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+        e.preventDefault();
+        openApp("finder");
+      }
+      if (e.key.toLowerCase() === "s" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+        e.preventDefault();
+        openApp("finder");
+      }
+      if (e.key.toLowerCase() === "c" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+        e.preventDefault();
+        openApp("mail");
+      }
+      if (e.key === "Escape" && activeWindowId) {
+        closeWindow(activeWindowId);
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSpotlightOpen(true);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [activeWindowId, closeWindow]);
+  }, [activeWindowId, closeWindow, openApp, setSpotlightOpen]);
 
   if (mobile) return <MobileShell />;
 
@@ -107,22 +157,22 @@ export function Desktop() {
               key={s.id}
               onDoubleClick={activate}
               onKeyDown={(e) => e.key === "Enter" && activate(e)}
-              className="group flex w-20 flex-col items-center gap-1 rounded-xl p-1.5 text-white transition-colors hover:bg-white/20"
+              className="group flex w-[78px] flex-col items-center gap-2 rounded-xl p-1 text-white transition-colors hover:bg-white/20"
               title={`Double-click to open ${s.label}`}
             >
               {s.brand ? (
-                <span className="block h-12 w-12 transition-transform group-hover:scale-105">
-                  <BrandIcon id={s.brand as BrandId} className="block h-12 w-12" />
+                <span className="block h-16 w-16 shrink-0 transition-transform group-hover:scale-[1.04]">
+                  <BrandIcon id={s.brand as BrandId} className="block h-16 w-16" />
                 </span>
               ) : (
                 <span
-                  className="flex h-12 w-12 items-center justify-center rounded-[14px] shadow-[0_8px_18px_rgba(15,23,42,0.35)] transition-transform group-hover:scale-105"
+                  className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[18px] shadow-[0_8px_18px_rgba(15,23,42,0.35)] transition-transform group-hover:scale-[1.04]"
                   style={{ background: s.color }}
                 >
-                  <Icon className="h-6 w-6 text-white" />
+                  <Icon className="h-7 w-7 text-white" />
                 </span>
               )}
-              <span className="rounded px-1 text-[10px] leading-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+              <span className="max-w-[72px] rounded px-1 text-center text-[12px] leading-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
                 {s.label}
               </span>
             </button>
