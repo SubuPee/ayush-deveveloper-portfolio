@@ -1028,9 +1028,8 @@ export function answerQuestion(question: string, _previousTopic?: string): Assis
   // DEFAULT UNKNOWN
   return {
     intent: "UNKNOWN",
-    text: "I don't have verified information about that. You can ask me about Ayush's experience, skills, projects, career or professional background.",
+    text: "Sorry, I don't have information about that.",
     source: "Profile Knowledge",
-    action: "finder",
   };
 }
 
