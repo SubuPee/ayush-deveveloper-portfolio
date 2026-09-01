@@ -91,7 +91,7 @@ export const ayushProfile: AyushProfile = {
     "Software Developer focused on building responsive, scalable and user-friendly web applications. Experienced in frontend development, API integration and modern web technologies.",
   experience: [
     {
-      company: "Provab Technosoft",
+      company: "P Technosoft",
       role: "Software Developer",
       startDate: "2025-05",
       endDate: "Present",
